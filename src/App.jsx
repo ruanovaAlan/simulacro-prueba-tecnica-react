@@ -5,23 +5,26 @@ import './App.css'
 
 export const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
 
-export function App() {
+const useCatFact = () => {
     const [fact, setFact] = useState()
-    const { imageUrl } = useCatImage({ fact })
 
-    //fetching de datos
+    const refreshFact = () => {
+        getRandomFact().then(({ newFact }) => setFact(newFact))
+    }
+
     useEffect(() => {
-        const fetchData = async () => {
-            const { newFact } = await getRandomFact()
-            setFact(newFact)
-        }
-        fetchData()
+        refreshFact()
     }, [])
 
+    return { fact, refreshFact }
+}
+
+export function App() {
+    const { fact, refreshFact } = useCatFact()
+    const { imageUrl } = useCatImage({ fact })
 
     const handleClick = async () => {
-        const { newFact } = await getRandomFact()
-        setFact(newFact)
+        refreshFact()
     }
 
     return (
