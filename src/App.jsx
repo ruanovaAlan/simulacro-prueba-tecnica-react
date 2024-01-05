@@ -3,6 +3,9 @@ import './App.css'
 import { getRandomFact } from "./services/facts"
 
 export const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
+const CAT_PREFIX_IMAGE = `https://cataas.com/cat/says/`
+const CAT_POSTFIX_IMAGE = `?fontSize=50&fontColor=red`
+
 
 export function App() {
     const [fact, setFact] = useState()
@@ -11,17 +14,30 @@ export function App() {
     //fetching de datos
     useEffect(() => {
         const fetchData = async () => {
-            const { newFact, imageURL } = await getRandomFact()
+            const { newFact } = await getRandomFact()
             setFact(newFact)
-            setImageUrl(imageURL)
         }
         fetchData()
     }, [])
 
+    useEffect(() => {
+        const fetchImage = async () => {
+            if (!fact) {
+                return
+            }
+            const firstThreeWords = fact.split(' ', 3).join(' ')
+            const url = `${CAT_PREFIX_IMAGE}${firstThreeWords}${CAT_POSTFIX_IMAGE}`
+            const res = await fetch(url)
+            const image = await res.url
+            setImageUrl(image)
+        }
+
+        fetchImage()
+    }, [fact])
+
     const handleClick = async () => {
-        const { newFact, imageURL } = await getRandomFact()
+        const { newFact } = await getRandomFact()
         setFact(newFact)
-        setImageUrl(imageURL)
     }
 
     return (
@@ -29,7 +45,7 @@ export function App() {
             <h1>App de gatitos</h1>
             <button onClick={handleClick}>Change Cat</button>
             {fact && <p>{fact}</p>}
-            {<img src={imageUrl} alt={`Image extracted using first three words of ${fact}`} />}
+            {<img src={imageUrl} alt={`Image extracted using first three words of ${fact} `} />}
         </main>
     )
 }
