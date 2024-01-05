@@ -4,9 +4,6 @@ import { getRandomFact } from "./services/facts"
 import './App.css'
 
 export const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
-const CAT_PREFIX_IMAGE = `https://cataas.com/cat/says/`
-const CAT_POSTFIX_IMAGE = `?fontSize=50&fontColor=red`
-
 
 export function App() {
     const [fact, setFact] = useState()
