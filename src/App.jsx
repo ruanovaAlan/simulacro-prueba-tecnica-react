@@ -6,19 +6,8 @@ export const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
 const CAT_PREFIX_IMAGE = `https://cataas.com/cat/says/`
 const CAT_POSTFIX_IMAGE = `?fontSize=50&fontColor=red`
 
-
-export function App() {
-    const [fact, setFact] = useState()
+function useCatImage({ fact }) {
     const [imageUrl, setImageUrl] = useState()
-
-    //fetching de datos
-    useEffect(() => {
-        const fetchData = async () => {
-            const { newFact } = await getRandomFact()
-            setFact(newFact)
-        }
-        fetchData()
-    }, [])
 
     useEffect(() => {
         const fetchImage = async () => {
@@ -34,6 +23,23 @@ export function App() {
 
         fetchImage()
     }, [fact])
+
+    return { imageUrl }
+}
+
+export function App() {
+    const [fact, setFact] = useState()
+    const { imageUrl } = useCatImage({ fact })
+
+    //fetching de datos
+    useEffect(() => {
+        const fetchData = async () => {
+            const { newFact } = await getRandomFact()
+            setFact(newFact)
+        }
+        fetchData()
+    }, [])
+
 
     const handleClick = async () => {
         const { newFact } = await getRandomFact()
