@@ -2,8 +2,6 @@ import { useCatImage } from "./hooks/useCatImage"
 import { useCatFact } from "./hooks/useCatFact"
 import './App.css'
 
-export const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
-
 export function App() {
     const { fact, refreshFact } = useCatFact()
     const { imageUrl } = useCatImage({ fact })
